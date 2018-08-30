@@ -1,0 +1,13 @@
+{
+  "name": "lab7",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Ben Iofel - 10409085",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mongodb": "^3.0.4",
+    "morgan": "^1.9.0"
+  }
+}

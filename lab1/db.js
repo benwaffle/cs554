@@ -75,7 +75,7 @@ module.exports = {
                 }
             }
         )
-        if (res.matchedCount === 0)
+        if (res.modifiedCount === 0)
             throw {status: 404, error: `no such task or comment`}
     },
 

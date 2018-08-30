@@ -17,6 +17,19 @@ app.use((req, res, next) => {
     next()
 })
 
+// middleware 2: counter
+const count = {}
+app.use(({ path }, res, next) => {
+    if (!(path in count))
+        count[path] = 0
+
+    count[path]++
+
+    console.log(`Count for ${path} is ${count[path]}\n`)
+
+    next()
+})
+
 /**
  * @param {express.RequestHandler} fn 
  */

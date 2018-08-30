@@ -17,7 +17,6 @@ function makeId(id) {
 module.exports = {
     async getAll(offset, limit) {
         const db = await coll
-        console.log(`offset ${offset}, limit ${limit}`)
         return await db.find().skip(offset).limit(limit).toArray()
     },
 

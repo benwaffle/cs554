@@ -6,6 +6,17 @@ const { isTask, isComment } = require('./validate')
 
 app.use(require('body-parser').json())
 
+// middleware 1: logger
+app.use((req, res, next) => {
+    const query = Object.entries(req.query).map(([key, value]) => `${key}=${value}`).join('&')
+    console.log(`${req.method} ${req.path}${query ? '?' + query : ''}`)
+    if (Object.keys(req.body).length > 0) {
+        console.log('Body:', req.body)
+    }
+
+    next()
+})
+
 /**
  * @param {express.RequestHandler} fn 
  */

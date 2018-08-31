@@ -131,4 +131,4 @@ app.use((err, req, res, next) => {
     })
 })
 
-app.listen(3000, () => console.log('listening: http://localhost:3000'))
+module.exports = app

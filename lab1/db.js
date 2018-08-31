@@ -10,7 +10,7 @@ function makeId(id) {
     try {
         return new ObjectID(id)
     } catch (e) {
-        throw `no such task: ${id}`
+        throw {status: 404, error: `no such task: invalid ID: ${id}`}
     }
 }
 
@@ -88,7 +88,7 @@ module.exports = {
 
     async deleteAll() {
         const db = await coll
-        await db.drop()
+        await db.deleteMany({})
     },
 
     async close() {

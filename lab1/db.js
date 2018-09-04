@@ -48,19 +48,21 @@ module.exports = {
 
     async pushComment(_id, comment) {
         const db = await coll
+        const data = {
+            _id: new ObjectID(),
+            ...comment
+        }
         const res = await db.updateOne(
             { _id: makeId(_id) },
             {
                 $push: {
-                    comments: {
-                        _id: new ObjectID(),
-                        ...comment
-                    }
+                    comments: data
                 }
             }
         )
         if (res.matchedCount === 0)
             throw {status: 404, error: `no such task: ${_id}`}
+        return data
     },
 
     async deleteComment(taskId, commentId) {

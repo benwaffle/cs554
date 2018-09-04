@@ -103,8 +103,7 @@ router.post('/:id/comments', handleErrors(async (req, res) => {
         return
     }
 
-    await db.pushComment(req.params.id, comment)
-    res.status(201).end()
+    res.status(201).json(await db.pushComment(req.params.id, comment))
 }))
 
 router.delete('/:taskId/:commentId', handleErrors(async (req, res) => {

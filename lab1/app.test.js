@@ -90,6 +90,28 @@ test('PATCH non-existing recipe', async () => {
     expect(res.status).toBe(404)
 })
 
+test('comments', async () => {
+    const res = await request(app).post('/api/tasks').send(gym)
+    expect(res.status).toBe(200)
+    const _id = res.body._id
+
+    const comment = {
+        name: 'Ben',
+        comment: 'Cool!'
+    }
+    const res2 = await request(app).post(`/api/tasks/${_id}/comments`).send(comment)
+    const cid = res2.body._id
+
+    const res3 = await request(app).get(`/api/tasks/${_id}`)
+    expect(res3.body.comments).toEqual([res2.body])
+
+    const res4 = await request(app).delete(`/api/tasks/${_id}/${cid}`)
+    expect(res4.status).toBe(202)
+
+    const res5 = await request(app).get(`/api/tasks/${_id}`)
+    expect(res5.body.comments.length).toBe(0)
+})
+
 afterAll(async () => {
     await db.deleteAll()
     await db.close()

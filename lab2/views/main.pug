@@ -6,20 +6,35 @@ html(lang="en")
     meta(http-equiv="X-UA-Compatible", content="ie=edge")
     title Lab2
     link(rel="stylesheet", href="/public/css/style.min.css")
+    script(src="/public/js/jquery.min.js")
+    script(src="/public/js/bootstrap.min.js")
   body
-    div.container-fluid
-      div.row
-        div.col-sm-2
+    .container-fluid
+      .row
+        .col-sm-2
           ul.nav.flex-column
             each val in products
               li.nav-item
                 a.nav-link(href=`#${val.id}`)= val.name
-        div.col-sm-10
-          div.row
+        .col-sm-10
+          .row
             each val in products
-              div.col-sm-6.col-md-4
-                div.card(id=val.id)
+              .col-sm-6.col-md-4
+                .card(id=val.id)
                   img.card-image-top(src=`/public/${val.img}`, width='100%')
-                  div.card-body
+                  .card-body
                     h5.card-title= val.name
-                    a.btn.btn-primary(href='#') Deetz
+                    p= val.short
+                    button.btn.btn-primary(data-toggle='modal', data-target=`#modal-${val.id}`) More
+    each val in products
+      .modal.fade(id=`modal-${val.id}`, tabindex='-1', role='dialog')
+        .modal-dialog
+          .modal-content
+            .modal-header
+              h5.modal-title= val.name
+              button.close(type='button', data-dismiss='modal', aria-label='Close')
+                span(aria-hidden='true') &times;
+            .modal-body
+              img.img-fluid(src=`/public/${val.img}`)
+              h2= val.short
+              p !{val.long}

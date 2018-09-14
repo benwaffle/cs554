@@ -21,20 +21,20 @@ html(lang="en")
             each val in products
               .col-sm-6.col-md-4
                 .card(id=val.id)
-                  img.card-image-top(src=`/public/${val.img}`, width='100%')
+                  img.card-image-top.img-fluid(src=`/public/${val.img}`, alt=val.id)
                   .card-body
-                    h5.card-title= val.name
+                    h1.card-title= val.name
                     p= val.short
-                    button.btn.btn-primary(data-toggle='modal', data-target=`#modal-${val.id}`) More
+                    button.btn.btn-primary.shake(data-toggle='modal', data-target=`#modal-${val.id}`) 🔥
     each val in products
       .modal.fade(id=`modal-${val.id}`, tabindex='-1', role='dialog')
         .modal-dialog
           .modal-content
             .modal-header
-              h5.modal-title= val.name
+              h1.modal-title= val.name
               button.close(type='button', data-dismiss='modal', aria-label='Close')
                 span(aria-hidden='true') &times;
             .modal-body
-              img.img-fluid(src=`/public/${val.img}`)
+              img.img-fluid(src=`/public/${val.img}`, alt=val.id)
               h2= val.short
               p !{val.long}

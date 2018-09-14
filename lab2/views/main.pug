@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    title Lab2
+    link(rel="stylesheet", href="/public/css/style.min.css")
+  body
+    div.container-fluid
+      div.row
+        div.col-sm-2
+          ul.nav.flex-column
+            each val in products
+              li.nav-item
+                a.nav-link(href=`#${val.id}`)= val.name
+        div.col-sm-10
+          div.row
+            each val in products
+              div.col-sm-6.col-md-4
+                div.card(id=val.id)
+                  img.card-image-top(src=`/public/${val.img}`, width='100%')
+                  div.card-body
+                    h5.card-title= val.name
+                    a.btn.btn-primary(href='#') Deetz

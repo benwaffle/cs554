@@ -1,5 +1,5 @@
 {
-  "name": "lab7",
+  "name": "lab1",
   "scripts": {
     "start": "node server.js",
     "test": "jest"

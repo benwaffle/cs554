@@ -11,7 +11,7 @@ class ApiService {
     constructor() {
         this.apiUrl = 'http://localhost:3001/graphql';
         this.userFields = `{id, first_name, last_name, email, department, country, todo_count}`;
-        this.todoFields = `{id title completed user {first_name, last_name}}`;
+        this.todoFields = `{id title completed user {id, first_name, last_name}}`;
     }
 
     /**
@@ -43,8 +43,8 @@ class ApiService {
      * @param {string} query
      * @returns {unresolved}
      */
-    async mutateGraphQlData(name, resource, params, fields) {
-        const query = `mutation ${name} {${resource} ${this.paramsToString(params)} ${fields}}`
+    async mutateGraphQlData(resource, params, fields) {
+        const query = `mutation {${resource} ${this.paramsToString(params)} ${fields}}`
         const res = await fetch(this.apiUrl, {
             method: 'POST',
             mode: 'cors',
@@ -90,9 +90,13 @@ class ApiService {
     }
 
     async createTodo(params) {
-        const data = await this.mutateGraphQlData('CreateTodo', 'createTodo', params, '{ id }')
-        console.log(data)
-        return data
+        const data = await this.mutateGraphQlData('createTodo', params, this.todoFields)
+        return data.createTodo
+    }
+
+    async updateTodo(params) {
+        const data = await this.mutateGraphQlData('updateTodo', params, this.todoFields)
+        return data.updateTodo
     }
 
     /**

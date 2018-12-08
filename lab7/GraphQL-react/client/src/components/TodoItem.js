@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import UserName from './UserName';
 
 const TodoItem = (props) => {
@@ -9,8 +10,10 @@ const TodoItem = (props) => {
             <div className = 'todo__ulabel'>Assigned To:</div>
             <UserName {...props.user} />
         </div>
+        <div>
+            <Link to={`/update/${props.id}`}>Edit</Link>
+        </div>
     </div>
-    
 }
 
 export default TodoItem;

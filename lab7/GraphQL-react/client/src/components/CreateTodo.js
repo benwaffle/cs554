@@ -7,7 +7,7 @@ export default class CreateTodo extends React.Component {
   state = {
     users: [],
     title: '',
-    user: null,
+    user: '',
   }
 
   constructor(props) {
@@ -28,9 +28,9 @@ export default class CreateTodo extends React.Component {
   async handleSubmit(event) {
     event.preventDefault()
     const { user, title } = this.state
-    if (title.trim() === '' || user == null)
+    if (title.trim() === '' || user === '')
       return;
-    const res = await ApiService.createTodo({
+    await ApiService.createTodo({
       user: parseInt(user),
       title
     })

@@ -78,6 +78,7 @@ const TodoQueryRootType = new GraphQLObjectType({
             },
             todos: {
                 args: {
+                    id: {type: GraphQLString},
                     userId: {type: GraphQLInt},
                     completed: {type: GraphQLBoolean},
                 },
@@ -101,18 +102,42 @@ const MutationRootType = new GraphQLObjectType({
                 user: {type: new GraphQLNonNull(GraphQLInt)},
                 title: {type: new GraphQLNonNull(GraphQLString)}
             },
-            type: new GraphQLList(TodoType),
+            type: TodoType,
             resolve: (parent, { user, title }) => {
                 if (Users.find(({ id }) => id === user) == null) {
                     throw new Error(`no such user ${user}`)
                 }
-                Todos.push({
+                const todo = {
                     id: uuid(),
                     userId: user,
                     title,
                     completed: false
-                })
-                return Todos;
+                }
+                Todos.push(todo)
+                return todo
+            }
+        },
+        updateTodo: {
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLString)},
+                user: {type: GraphQLInt},
+                title: {type: GraphQLString},
+                completed: {type: GraphQLBoolean}
+            },
+            type: TodoType,
+            resolve: (parent, { id, user, title, completed }) => {
+                if (Users.find(({ id }) => id === user) == null) {
+                    throw new Error(`no such user ${user}`)
+                }
+                const newtodo = {
+                    id,
+                    userId: user,
+                    title,
+                    completed
+                }
+                const i = Todos.findIndex(todo => todo.id === id)
+                Todos[i] = newtodo
+                return newtodo
             }
         }
     }

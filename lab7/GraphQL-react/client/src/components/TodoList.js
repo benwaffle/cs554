@@ -8,7 +8,7 @@ const TodoList = (props) => {
     return <div className="todo__list">
         {
             props.todos.map((item, index) => {
-                return <TodoItem key={index} {...item} />;
+                return <TodoItem key={index} {...item} todoUpdated={props.todoUpdated} />;
             })
         }
     </div>

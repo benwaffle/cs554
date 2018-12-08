@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import UserName from './UserName';
+import DeleteTodo from './DeleteTodo';
+import ApiService from '../ApiService';
 
 const TodoItem = (props) => {
     const completedClass = props.completed ? 'todo__item--completed' : '';
@@ -12,6 +14,12 @@ const TodoItem = (props) => {
         </div>
         <div>
             <Link to={`/update/${props.id}`}>Edit</Link>
+        </div>
+        <div>
+            <DeleteTodo deleteTodo={async () => {
+                await ApiService.deleteTodo({ id: props.id })
+                props.todoUpdated()
+            }} />
         </div>
     </div>
 }

@@ -10,9 +10,11 @@ class TodoListContainer extends React.Component {
         this.state = {
             todos: [],
         };
+
+        this.update = this.update.bind(this)
     }
 
-    async componentDidMount() {
+    async update() {
         const userId = parseInt(this.props.match.params.userId, 10);
         try {
             const todos = await ApiService.getTodos({userId});
@@ -22,10 +24,14 @@ class TodoListContainer extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this.update()
+    }
+
     render () {
         return (
            <div className="todo">
-               <TodoList todos={this.state.todos} />
+               <TodoList todos={this.state.todos} todoUpdated={this.update} />
                <Link className="todo__linkback" to='/'>Back to Users search</Link>
            </div>
         );

@@ -99,6 +99,10 @@ class ApiService {
         return data.updateTodo
     }
 
+    async deleteTodo(params) {
+        return await this.mutateGraphQlData('deleteTodo', params, '{ id }')
+    }
+
     /**
      * 
      * @param {object} params

@@ -139,6 +139,19 @@ const MutationRootType = new GraphQLObjectType({
                 Todos[i] = newtodo
                 return newtodo
             }
+        },
+        deleteTodo: {
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLString)}
+            },
+            type: TodoType,
+            resolve: (parent, { id }) => {
+                console.log(Todos)
+                const i = Todos.findIndex(todo => todo.id === id)
+                if (i === -1)
+                    throw new Error('no such todo')
+                return Todos.splice(i, 1)
+            }
         }
     }
 })

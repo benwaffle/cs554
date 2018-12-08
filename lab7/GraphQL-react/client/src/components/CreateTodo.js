@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import ApiService from '../ApiService'
 import get from 'lodash/get'
 
@@ -30,7 +31,7 @@ export default class CreateTodo extends React.Component {
     if (title.trim() === '' || user == null)
       return;
     const res = await ApiService.createTodo({
-      user,
+      user: parseInt(user),
       title
     })
     this.props.history.push('/')
@@ -41,20 +42,25 @@ export default class CreateTodo extends React.Component {
   }
 
   render() {
-    return <form className='user__form' onSubmit={this.handleSubmit}>
-      <label>
-        Description
-        <input name='title' value={this.state.title} required onChange={this.handleChange} />
-      </label>
-      <label>
-        User
-        <select name='user' value={this.state.user} onChange={this.handleChange}>
-          {this.state.users.map(({first_name, last_name, id}, i) =>
-            <option key={i} value={id}>{first_name} {last_name}</option>
-          )}
-        </select>
-      </label>
-      <input type='submit' value='Create' />
-    </form>
+    return (
+      <div>
+        <Link to='/'><button>Go back</button></Link>
+        <form className='user__form' onSubmit={this.handleSubmit}>
+          <label>
+            Description
+            <input name='title' value={this.state.title} required onChange={this.handleChange} />
+          </label>
+          <label>
+            User
+            <select name='user' value={this.state.user} onChange={this.handleChange}>
+              {this.state.users.map(({first_name, last_name, id}, i) =>
+                <option key={i} value={id}>{first_name} {last_name}</option>
+              )}
+            </select>
+          </label>
+          <input type='submit' value='Create' />
+        </form>
+      </div>
+    )
   }
 }

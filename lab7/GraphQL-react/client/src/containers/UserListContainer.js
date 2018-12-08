@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import ApiService from '../ApiService';
 import UserList from '../components/UserList';
 import UserForm from '../forms/UserForm';
@@ -23,6 +24,7 @@ class UserListContainer extends React.Component {
 
     render() {
         return <div className="user">
+            <Link to='/create'><button>Create Todo</button></Link>
             <UserForm submitHandler={this.search} />
             <UserList users={this.state.users} />
         </div>;

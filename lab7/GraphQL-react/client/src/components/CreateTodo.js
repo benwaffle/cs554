@@ -1,11 +1,12 @@
 import React from 'react'
 import ApiService from '../ApiService'
+import get from 'lodash/get'
 
 export default class CreateTodo extends React.Component {
   state = {
     users: [],
-    description: '',
-    user: ''
+    title: '',
+    user: null,
   }
 
   constructor(props) {
@@ -17,15 +18,20 @@ export default class CreateTodo extends React.Component {
   async componentDidMount() {
     const users = await ApiService.getUserNames()
 
-    this.setState({ users })
+    this.setState({
+      users,
+      user: get(users, '[0].id')
+    })
   }
 
   async handleSubmit(event) {
     event.preventDefault()
-    const { user, description } = this.state
-    await ApiService.createTodo({
+    const { user, title } = this.state
+    if (title.trim() === '' || user == null)
+      return;
+    const res = await ApiService.createTodo({
       user,
-      description
+      title
     })
     this.props.history.push('/')
   }
@@ -38,7 +44,7 @@ export default class CreateTodo extends React.Component {
     return <form className='user__form' onSubmit={this.handleSubmit}>
       <label>
         Description
-        <input name='description' value={this.state.description} required onChange={this.handleChange} />
+        <input name='title' value={this.state.title} required onChange={this.handleChange} />
       </label>
       <label>
         User

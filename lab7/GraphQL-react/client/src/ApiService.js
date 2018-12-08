@@ -90,7 +90,7 @@ class ApiService {
     }
 
     async createTodo(params) {
-        const data = await this.mutateGraphQlData('CreateTodo', 'createTodo', params, '{}')
+        const data = await this.mutateGraphQlData('CreateTodo', 'createTodo', params, '{ id }')
         console.log(data)
         return data
     }

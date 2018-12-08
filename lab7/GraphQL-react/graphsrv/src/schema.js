@@ -3,8 +3,9 @@ import Todos from './data/todos';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 import sumBy from 'lodash/sumBy';
+import uuid from 'uuid/v4';
 import {
-GraphQLInt,
+        GraphQLInt,
         GraphQLBoolean,
         GraphQLString,
         GraphQLList,
@@ -43,7 +44,7 @@ const TodoType = new GraphQLObjectType({
     name: 'Todo',
     description: 'Task for user',
     fields: () => ({
-            id: {type: new GraphQLNonNull(GraphQLInt)},
+            id: {type: new GraphQLNonNull(GraphQLString)},
             title: {type: GraphQLString},
             completed: {type: new GraphQLNonNull(GraphQLBoolean)},
             user: {
@@ -98,11 +99,20 @@ const MutationRootType = new GraphQLObjectType({
         createTodo: {
             args: {
                 user: {type: new GraphQLNonNull(GraphQLInt)},
-                description: {type: new GraphQLNonNull(GraphQLString)}
+                title: {type: new GraphQLNonNull(GraphQLString)}
             },
-            type: new GraphQLList(UserType),
-            resolve: (parent, args) => {
-
+            type: new GraphQLList(TodoType),
+            resolve: (parent, { user, title }) => {
+                if (Users.find(({ id }) => id === user) == null) {
+                    throw new Error(`no such user ${user}`)
+                }
+                Todos.push({
+                    id: uuid(),
+                    userId: user,
+                    title,
+                    completed: false
+                })
+                return Todos;
             }
         }
     }

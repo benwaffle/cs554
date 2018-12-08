@@ -14,14 +14,14 @@ class App extends Component {
     this.finishEditing = this.finishEditing.bind(this)
   }
 
-  async gql(query) {
+  async gql(query, variables = {}) {
     const res = await fetch('http://localhost:3001/graphql', {
       method: 'POST',
       mode: 'cors',
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
-      body: JSON.stringify({ query })
+      body: JSON.stringify({ query, variables })
     })
     if (res.ok) {
       const body = await res.json()
@@ -47,27 +47,31 @@ class App extends Component {
   async handleSubmit(event) {
     event.preventDefault()
 
-    this.setState({ newquote: '' })
-
     await this.gql(`
-    mutation {
-      createQuote(input: {quote: "${this.state.newquote}"}) {
+    mutation ($quote: String!) {
+      createQuote(input: {quote: $quote}) {
         id
       }
     }
-    `)
+    `, {
+      quote: this.state.newquote
+    })
+
+    this.setState({ newquote: '' })
 
     await this.update()
   }
 
   async deleteQuote(id) {
     await this.gql(`
-    mutation {
-      deleteQuote(input: {id: "${id}"}) {
+    mutation ($id: String!) {
+      deleteQuote(input: {id: $id}) {
         id
       }
     }
-    `)
+    `, {
+      id
+    })
 
     await this.update()
   }
@@ -77,12 +81,15 @@ class App extends Component {
     const { id, quote } = this.state.editing
 
     await this.gql(`
-    mutation {
-      updateQuote(input: {id: "${id}", quote: "${quote}"}) {
+    mutation ($id: String!, $quote: String!) {
+      updateQuote(input: {id: $id, quote: $quote}) {
         id
       }
     }
-    `)
+    `, {
+      id,
+      quote
+    })
 
     this.setState({
       editing: null
@@ -103,7 +110,6 @@ class App extends Component {
           {this.state.quotes.map((quote, i) =>
             <div key={i}>
               {quote.quote}
-              -
               <button onClick={() => this.deleteQuote(quote.id)}>delete</button>
               <button onClick={() => this.setState({ editing: quote })}>edit</button>
             </div>
